@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agrinova - AI Powered Farming Assistant by Parth Dshiphale</title>
+
+    <!-- Meta Tags -->
+    <meta name="description" content="Agrinova - Your AI-powered farming assistant for crop recommendations, market prices, weather updates, and government schemes.">
+    <meta name="keywords" content="farming, agriculture, AI, crop recommendation, mandi prices, weather, government schemes">
+    <meta name="author" content="Parth Dshiphale">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/icons/favicon.png">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Chart.js for graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="loader">
+            <img src="assets/icons/agrinova-logo.png" alt="Agrinova">
+            <div class="loader-text">Agrinova by Parth Dshiphale</div>
+            <div class="loader-spinner"></div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="/">
+                    <img src="assets/icons/agrinova-logo.png" alt="Agrinova Logo">
+                    <span class="logo-text">Agrinova</span>
+                </a>
+            </div>
+
+            <div class="nav-menu" id="navMenu">
+                <ul class="nav-links">
+                    <li><a href="#home" class="active">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#crop-recommendation">Crop Advisor</a></li>
+                    <li><a href="#market-prices">Market Prices</a></li>
+                    <li><a href="#weather">Weather</a></li>
+                    <li><a href="#schemes">Schemes</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+
+                <div class="nav-controls">
+                    <div class="language-selector">
+                        <select id="languageSelect">
+                            <option value="en">English</option>
+                            <option value="hi">हिन्दी</option>
+                            <option value="ta">தமிழ்</option>
+                            <option value="te">తెలుగు</option>
+                            <option value="mr">मराठी</option>
+                            <option value="gu">ગુજરાતી</option>
+                            <option value="kn">ಕನ್ನಡ</option>
+                        </select>
+                    </div>
+
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="hero-background">
+            <div class="hero-overlay"></div>
+            <div class="hero-particles" id="particles"></div>
+        </div>
+
+        <div class="hero-content">
+            <div class="container">
+                <div class="hero-text" data-aos="fade-up">
+                    <h1 class="hero-title">
+                        <span class="greeting">Welcome to</span>
+                        <span class="brand-name">Agrinova</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Your AI-Powered Farming Assistant for Smarter Agriculture
+                    </p>
+                    <p class="hero-description">
+                        Get accurate crop recommendations, real-time market prices, weather forecasts, and government schemes - all powered by advanced AI technology.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#crop-recommendation" class="btn btn-primary">
+                            <i class="fas fa-robot"></i> Try AI Crop Advisor
+                        </a>
+                        <a href="#features" class="btn btn-outline">
+                            <i class="fas fa-play"></i> Watch Demo
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hero-stats" data-aos="fade-up" data-aos-delay="200">
+                    <div class="stat-card">
+                        <div class="stat-number">50K+</div>
+                        <div class="stat-label">Farmers Helped</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">22</div>
+                        <div class="stat-label">Crops Supported</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">95%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">AI Support</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-wave">
+            <svg viewBox="0 0 1440 320" preserveAspectRatio="none">
+                <path fill="currentColor" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,170.7C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Powerful Features for Modern Farming</h2>
+                <p>Everything you need to make data-driven farming decisions</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>AI Crop Recommendation</h3>
+                    <p>Ensemble of 5 AI models gives you the most accurate crop suggestions based on your soil and climate conditions.</p>
+                    <a href="#crop-recommendation" class="feature-link">Try Now <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Real-time Market Prices</h3>
+                    <p>Live mandi prices from across India. Updated daily from official government sources.</p>
+                    <a href="#market-prices" class="feature-link">Check Prices <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-icon">
+                        <i class="fas fa-cloud-sun-rain"></i>
+                    </div>
+                    <h3>Hyperlocal Weather</h3>
+                    <p>7-day accurate weather forecast for your exact location. Plan your farming activities better.</p>
+                    <a href="#weather" class="feature-link">View Weather <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="feature-icon">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <h3>Government Schemes</h3>
+                    <p>Never miss a government benefit. Get personalized scheme recommendations and application help.</p>
+                    <a href="#schemes" class="feature-link">Explore Schemes <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+                    <div class="feature-icon">
+                        <i class="fas fa-comment-dots"></i>
+                    </div>
+                    <h3>AI Chatbot Assistant</h3>
+                    <p>24/7 voice-enabled assistant in 7 Indian languages. Ask anything about farming.</p>
+                    <button class="feature-link open-chatbot">Chat Now <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="600">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3>Farming Calendar</h3>
+                    <p>Personalized farming calendar with sowing, irrigation, and harvesting reminders.</p>
+                    <a href="#calendar" class="feature-link">View Calendar <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Crop Recommendation Section -->
+    <section id="crop-recommendation" class="crop-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>AI Crop Recommendation</h2>
+                <p>Enter your soil and climate details for personalized crop suggestions</p>
+            </div>
+
+            <div class="crop-container">
+                <div class="crop-form" data-aos="fade-right">
+                    <form id="cropRecommendationForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nitrogen">
+                                    <i class="fas fa-flask"></i>
+                                    Nitrogen (N) in soil
+                                </label>
+                                <input type="number" id="nitrogen" name="nitrogen" step="0.1" min="0" max="140" required placeholder="e.g., 90">
+                                <div class="input-range">
+                                    <input type="range" id="nitrogenRange" min="0" max="140" value="90">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phosphorus">
+                                    <i class="fas fa-flask"></i>
+                                    Phosphorus (P) in soil
+                                </label>
+                                <input type="number" id="phosphorus" name="phosphorus" step="0.1" min="0" max="145" required placeholder="e.g., 42">
+                                <div class="input-range">
+                                    <input type="range" id="phosphorusRange" min="0" max="145" value="42">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="potassium">
+                                    <i class="fas fa-flask"></i>
+                                    Potassium (K) in soil
+                                </label>
+                                <input type="number" id="potassium" name="potassium" step="0.1" min="0" max="205" required placeholder="e.g., 43">
+                                <div class="input-range">
+                                    <input type="range" id="potassiumRange" min="0" max="205" value="43">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="temperature">
+                                    <i class="fas fa-thermometer-half"></i>
+                                    Temperature (°C)
+                                </label>
+                                <input type="number" id="temperature" name="temperature" step="0.1" min="0" max="50" required placeholder="e.g., 25.5">
+                                <div class="input-range">
+                                    <input type="range" id="temperatureRange" min="0" max="50" value="25" step="0.1">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="humidity">
+                                    <i class="fas fa-tint"></i>
+                                    Humidity (%)
+                                </label>
+                                <input type="number" id="humidity" name="humidity" step="0.1" min="0" max="100" required placeholder="e.g., 82">
+                                <div class="input-range">
+                                    <input type="range" id="humidityRange" min="0" max="100" value="82">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ph">
+                                    <i class="fas fa-flask"></i>
+                                    Soil pH
+                                </label>
+                                <input type="number" id="ph" name="ph" step="0.1" min="0" max="14" required placeholder="e.g., 6.5">
+                                <div class="input-range">
+                                    <input type="range" id="phRange" min="0" max="14" value="6.5" step="0.1">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="rainfall">
+                                    <i class="fas fa-cloud-rain"></i>
+                                    Rainfall (mm)
+                                </label>
+                                <input type="number" id="rainfall" name="rainfall" step="0.1" min="0" max="300" required placeholder="e.g., 202">
+                                <div class="input-range">
+                                    <input type="range" id="rainfallRange" min="0" max="300" value="202">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    Location (Optional)
+                                </label>
+                                <input type="text" id="location" name="location" placeholder="Enter your village/city">
+                                <button type="button" class="btn-get-location" id="getLocation">
+                                    <i class="fas fa-crosshairs"></i> Use My Location
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary btn-large">
+                                <i class="fas fa-magic"></i>
+                                Get AI Recommendation
+                            </button>
+                            <button type="reset" class="btn btn-outline">
+                                <i class="fas fa-redo"></i>
+                                Reset
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="crop-results" id="cropResults" data-aos="fade-left" style="display: none;">
+                    <div class="results-header">
+                        <h3>Your AI Recommendations</h3>
+                        <div class="confidence-meter">
+                            <div class="meter-label">AI Confidence</div>
+                            <div class="meter-bar">
+                                <div class="meter-fill" id="confidenceFill"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="primary-recommendation" id="primaryRecommendation">
+                        <!-- Filled by JavaScript -->
+                    </div>
+
+                    <div class="top-recommendations">
+                        <h4>Top 5 Recommended Crops</h4>
+                        <div class="recommendation-list" id="recommendationList">
+                            <!-- Filled by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div class="crop-details" id="cropDetails">
+                        <!-- Filled by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market Prices Section -->
+    <section id="market-prices" class="market-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Live Mandi Prices</h2>
+                <p>Real-time commodity prices from across India</p>
+            </div>
+
+            <div class="market-controls" data-aos="fade-up">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="cropSearch" placeholder="Search crop...">
+                </div>
+
+                <div class="filters">
+                    <select id="stateFilter">
+                        <option value="">All States</option>
+                    </select>
+
+                    <select id="commodityFilter">
+                        <option value="">All Commodities</option>
+                    </select>
+                </div>
+
+                <button class="btn-refresh" id="refreshPrices">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+
+            <div class="market-table-container" data-aos="fade-up">
+                <table class="market-table" id="priceTable">
+                    <thead>
+                        <tr>
+                            <th>Commodity</th>
+                            <th>Market</th>
+                            <th>State</th>
+                            <th>Min Price (₹/quintal)</th>
+                            <th>Max Price (₹/quintal)</th>
+                            <th>Modal Price (₹/quintal)</th>
+                            <th>Arrival Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="priceTableBody">
+                        <tr>
+                            <td colspan="7" class="loading-row">
+                                <div class="spinner"></div>
+                                Loading prices...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="price-chart-container" data-aos="fade-up">
+                <h3>Price Trends</h3>
+                <canvas id="priceChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- Weather Section -->
+    <section id="weather" class="weather-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Weather Forecast</h2>
+                <p>7-day accurate weather forecast for your farm</p>
+            </div>
+
+            <div class="weather-current" data-aos="fade-up">
+                <div class="current-weather" id="currentWeather">
+                    <!-- Filled by JavaScript -->
+                </div>
+            </div>
+
+            <div class="weather-forecast" id="weatherForecast" data-aos="fade-up">
+                <!-- Filled by JavaScript -->
+            </div>
+
+            <div class="weather-alerts" id="weatherAlerts" style="display: none;">
+                <h3><i class="fas fa-exclamation-triangle"></i> Weather Alerts</h3>
+                <div class="alerts-list" id="alertsList"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Government Schemes Section -->
+    <section id="schemes" class="schemes-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Government Schemes</h2>
+                <p>Find schemes and benefits you're eligible for</p>
+            </div>
+
+            <div class="schemes-search" data-aos="fade-up">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="schemeSearch" placeholder="Search schemes...">
+                </div>
+            </div>
+
+            <div class="schemes-grid" id="schemesGrid" data-aos="fade-up">
+                <!-- Filled by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>About Agrinova</h2>
+                <p>Created by Parth Dshiphale with ❤️ for farmers</p>
+            </div>
+
+            <div class="about-content">
+                <div class="about-text" data-aos="fade-right">
+                    <h3>Our Mission</h3>
+                    <p>To empower farmers with AI-driven insights and make farming more profitable and sustainable.</p>
+
+                    <h3>Our Technology</h3>
+                    <p>Agrinova uses an ensemble of 5 advanced machine learning models to provide highly accurate crop recommendations. We integrate with government APIs for real-time market prices and weather data.</p>
+
+                    <div class="tech-stack">
+                        <span class="tech-badge">Python Flask</span>
+                        <span class="tech-badge">Machine Learning</span>
+                        <span class="tech-badge">Ensemble Models</span>
+                        <span class="tech-badge">Dialogflow</span>
+                        <span class="tech-badge">REST APIs</span>
+                    </div>
+
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-envelope"></i> parth.dshiphale@agrinova.com</p>
+                    <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+                </div>
+
+                <div class="about-stats" data-aos="fade-left">
+                    <div class="stat-circle">
+                        <div class="stat-circle-number">95%</div>
+                        <div class="stat-circle-label">Accuracy</div>
+                    </div>
+
+                    <div class="stat-circle">
+                        <div class="stat-circle-number">7</div>
+                        <div class="stat-circle-label">Languages</div>
+                    </div>
+
+                    <div class="stat-circle">
+                        <div class="stat-circle-number">50K+</div>
+                        <div class="stat-circle-label">Farmers</div>
+                    </div>
+
+                    <div class="stat-circle">
+                        <div class="stat-circle-number">22</div>
+                        <div class="stat-circle-label">Crops</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chatbot -->
+    <div class="chatbot-container" id="chatbotContainer">
+        <div class="chatbot-header">
+            <div class="chatbot-info">
+                <i class="fas fa-robot"></i>
+                <h4>Agrinova AI Assistant</h4>
+            </div>
+            <div class="chatbot-controls">
+                <button class="voice-toggle" id="voiceToggle">
+                    <i class="fas fa-microphone"></i>
+                </button>
+                <button class="minimize-chatbot" id="minimizeChatbot">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="chatbot-messages" id="chatbotMessages">
+            <div class="message bot-message">
+                <div class="message-content">
+                    👋 Namaste! I'm your Agrinova AI assistant. How can I help you today?
+                </div>
+            </div>
+        </div>
+
+        <div class="chatbot-input">
+            <input type="text" id="chatbotInput" placeholder="Type your question...">
+            <button class="send-message" id="sendMessage">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+
+        <div class="chatbot-quick-actions">
+            <button class="quick-action" data-query="What crops should I plant this season?">🌱 Crop advice</button>
+            <button class="quick-action" data-query="Show me mandi prices for wheat">💰 Wheat prices</button>
+            <button class="quick-action" data-query="Tell me about PM-KISAN scheme">🏛️ PM-KISAN</button>
+            <button class="quick-action" data-query="Weather forecast for next week">🌤️ Weather</button>
+        </div>
+    </div>
+
+    <button class="chatbot-toggle" id="chatbotToggle">
+        <i class="fas fa-comment-dots"></i>
+    </button>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Agrinova</h4>
+                    <p>AI-Powered Farming Assistant<br>Created by Parth Dshiphale</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#crop-recommendation">Crop Advisor</a></li>
+                        <li><a href="#market-prices">Market Prices</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Farming Guide</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Support</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                    <p class="copyright">© 2026 Agrinova. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/crop.js"></script>
+    <script src="js/weather.js"></script>
+    <script src="js/prices.js"></script>
+    <script src="js/schemes.js"></script>
+    <script src="js/chatbot.js"></script>
+    <script src="js/animations.js"></script>
+</body>
+
+</html>
