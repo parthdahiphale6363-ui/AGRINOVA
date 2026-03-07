@@ -22,10 +22,10 @@ app.config['SECRET_KEY'] = 'agrinova-secret-key-parth-2026'
 CORS(app)
 
 # ============================================
-# CLAUDE API CONFIGURATION
+# GEMINI API CONFIGURATION (COMPLETELY FREE!)
 # ============================================
-CLAUDE_API_URL = "https://api.anthropic.com/v1/messages"
-CLAUDE_API_KEY = "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"  # Set your Anthropic API key here, or use env var: ANTHROPIC_API_KEY
+GEMINI_API_KEY = "AIzaSyCMSjnoiIUzoZfuVeYcJlOFIG5Lo-i8SDU"  # Your Gemini key
+GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
 
 # ============================================
 # INPUT VALIDATION RANGES (Scientifically valid)
@@ -108,15 +108,19 @@ def validate_soil_input(data):
 # ============================================
 # CLAUDE AI RECOMMENDATION
 # ============================================
-def get_claude_recommendation(soil_data):
-    api_key = CLAUDE_API_KEY or os.environ.get('ANTHROPIC_API_KEY', '')
+def get_gemini_recommendation(soil_data):
+    api_key = GEMINI_API_KEY or os.environ.get('GEMINI_API_KEY', '')
+    
+    print(f"🔑 API Key present: {'Yes' if api_key else 'No'}")
+    
     if not api_key:
+        print("⚠️ No Gemini API key found, using rule-based")
         return get_intelligent_recommendation(soil_data)
-
+    
     n, p, k = soil_data['nitrogen'], soil_data['phosphorus'], soil_data['potassium']
-    t, h    = soil_data['temperature'], soil_data['humidity']
-    ph, r   = soil_data['ph'], soil_data['rainfall']
-
+    t, h = soil_data['temperature'], soil_data['humidity']
+    ph, r = soil_data['ph'], soil_data['rainfall']
+    
     prompt = f"""You are an expert agronomist for Indian farming conditions.
 Analyze these soil and climate parameters and recommend the best crops:
 
@@ -128,52 +132,66 @@ Analyze these soil and climate parameters and recommend the best crops:
 - Soil pH: {ph}
 - Rainfall: {r} mm/month
 
-Respond ONLY with a valid JSON object (no markdown, no extra text):
+Respond ONLY with a valid JSON object (no other text):
 {{
   "primary_crop": "<best crop name>",
   "confidence": <0.0 to 1.0>,
   "alternatives": [
-    {{"crop": "<name>", "confidence": <0.0-1.0>, "icon": "<emoji>"}},
-    {{"crop": "<name>", "confidence": <0.0-1.0>, "icon": "<emoji>"}},
-    {{"crop": "<name>", "confidence": <0.0-1.0>, "icon": "<emoji>"}},
-    {{"crop": "<name>", "confidence": <0.0-1.0>, "icon": "<emoji>"}},
-    {{"crop": "<name>", "confidence": <0.0-1.0>, "icon": "<emoji>"}}
+    {{"crop": "<name1>", "confidence": 0.85, "icon": "<emoji>"}},
+    {{"crop": "<name2>", "confidence": 0.75, "icon": "<emoji>"}},
+    {{"crop": "<name3>", "confidence": 0.65, "icon": "<emoji>"}},
+    {{"crop": "<name4>", "confidence": 0.55, "icon": "<emoji>"}},
+    {{"crop": "<name5>", "confidence": 0.45, "icon": "<emoji>"}}
   ],
   "tips": ["<tip1>", "<tip2>", "<tip3>", "<tip4>"],
   "reasoning": "<2-3 sentence scientific explanation>"
-}}
-Only suggest real crops grown in India. Be scientifically accurate."""
+}}"""
 
     try:
+        print("🌐 Calling Gemini API...")
         response = requests.post(
-            CLAUDE_API_URL,
-            headers={
-                "x-api-key": api_key,
-                "anthropic-version": "2023-06-01",
-                "content-type": "application/json"
-            },
+            f"{GEMINI_API_URL}?key={api_key}",
+            headers={"Content-Type": "application/json"},
             json={
-                "model": "claude-sonnet-4-20250514",
-                "max_tokens": 1000,
-                "messages": [{"role": "user", "content": prompt}]
+                "contents": [{
+                    "parts": [{"text": prompt}]
+                }],
+                "generationConfig": {
+                    "temperature": 0.3,
+                    "maxOutputTokens": 1000,
+                    "responseMimeType": "application/json"
+                }
             },
             timeout=15
         )
+        
+        print(f"📡 Response status: {response.status_code}")
+        
         if response.status_code == 200:
             result = response.json()
-            text = result['content'][0]['text'].strip()
-            if text.startswith("```"):
-                text = text.split("```")[1]
-                if text.startswith("json"):
-                    text = text[4:]
-            parsed = json.loads(text.strip())
-            parsed['ai_source'] = 'Claude AI'
-            return parsed
+            content = result['candidates'][0]['content']['parts'][0]['text']
+            
+            # Parse JSON response
+            try:
+                import re
+                json_match = re.search(r'\{.*\}', content, re.DOTALL)
+                if json_match:
+                    recommendation = json.loads(json_match.group())
+                else:
+                    recommendation = json.loads(content)
+                
+                recommendation['ai_source'] = 'Gemini AI'
+                print("✅ Gemini API response received")
+                return recommendation
+            except json.JSONDecodeError as e:
+                print(f"❌ JSON parsing error: {e}")
+                return get_intelligent_recommendation(soil_data)
         else:
-            print(f"Claude API error {response.status_code}: {response.text}")
+            print(f"❌ Gemini API error: {response.text}")
             return get_intelligent_recommendation(soil_data)
+            
     except Exception as e:
-        print(f"Claude API exception: {e}")
+        print(f"❌ Gemini API exception: {e}")
         return get_intelligent_recommendation(soil_data)
 
 
@@ -290,7 +308,7 @@ def recommend_crop():
             }), 400
 
         print(f"📊 Processing soil data: {validated}")
-        recommendation = get_claude_recommendation(validated)
+        recommendation = get_gemini_recommendation(validated)
 
         primary_crop = recommendation['primary_crop']
         primary_key  = primary_crop.lower()
@@ -411,8 +429,8 @@ if __name__ == '__main__':
     print("🌾 AGRINOVA - AI POWERED FARMING ASSISTANT")
     print("="*60)
     print(f"👤 Created by: Parth Dahiphale")
-    api_key = CLAUDE_API_KEY or os.environ.get('ANTHROPIC_API_KEY', '')
-    print(f"🤖 AI Engine: {'Claude AI (Anthropic)' if api_key else 'Agri-Intelligence AI (Rule-based)'}")
+    api_key = GEMINI_API_KEY or os.environ.get('GEMINI_API_KEY', '')
+    print(f"🤖 AI Engine: {'Gemini AI (Free)' if api_key else 'Agri-Intelligence AI (Rule-based)'}")
     print(f"📍 Server: http://localhost:5000")
     print("="*60 + "\n")
     app.run(debug=True, port=5000)
