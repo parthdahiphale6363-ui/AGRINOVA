@@ -1,6 +1,6 @@
 """
 Agrinova - Crop Recommendation API
-Created by Parth Dshiphale
+Created by Parth Dahiphale
 """
 
 from flask import Blueprint, request, jsonify, current_app

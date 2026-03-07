@@ -1,6 +1,6 @@
 /**
  * Agrinova - Main JavaScript File
- * Created by Parth Dshiphale
+ * Created by Parth Dahiphale
  */
 
 // Wait for DOM to load
