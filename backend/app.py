@@ -8,6 +8,7 @@ import os
 import requests
 import json
 import random
+from io import BytesIO
 from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
 from datetime import datetime
@@ -415,3 +416,80 @@ if __name__ == '__main__':
     print(f"📍 Server: http://localhost:5000")
     print("="*60 + "\n")
     app.run(debug=True, port=5000)
+
+
+# ============================================
+# VERCEL SERVERLESS HANDLER
+# ============================================
+def handler(event, context):
+    """
+    Vercel serverless handler for AWS Lambda.
+    Converts Lambda event to WSGI and returns Vercel-formatted response.
+    """
+    from io import BytesIO
+    from werkzeug.serving import WSGIRequestHandler
+    
+    # Build WSGI environ dict
+    environ = {
+        'REQUEST_METHOD': event.get('httpMethod', 'GET'),
+        'SCRIPT_NAME': '',
+        'PATH_INFO': event.get('path', '/'),
+        'QUERY_STRING': event.get('rawQueryString', ''),
+        'CONTENT_TYPE': event.get('headers', {}).get('content-type', ''),
+        'CONTENT_LENGTH': event.get('headers', {}).get('content-length', '0'),
+        'SERVER_NAME': event.get('headers', {}).get('host', 'localhost'),
+        'SERVER_PORT': '443',
+        'SERVER_PROTOCOL': 'HTTP/1.1',
+        'wsgi.version': (1, 0),
+        'wsgi.url_scheme': 'https',
+        'wsgi.input': BytesIO(event.get('body', '').encode() if isinstance(event.get('body'), str) else event.get('body', b'')),
+        'wsgi.errors': None,
+        'wsgi.multithread': False,
+        'wsgi.multiprocess': False,
+        'wsgi.run_once': False,
+    }
+    
+    # Add headers to environ
+    headers = event.get('headers', {})
+    for key, value in headers.items():
+        key = 'HTTP_' + key.upper().replace('-', '_')
+        if key not in ('HTTP_CONTENT_TYPE', 'HTTP_CONTENT_LENGTH'):
+            environ[key] = value
+    
+    # Capture response
+    response_data = {'status': '200 OK', 'headers': [], 'body': []}
+    
+    def start_response(status, response_headers, exc_info=None):
+        response_data['status'] = status
+        response_data['headers'] = response_headers
+        return lambda x: None
+    
+    # Call Flask WSGI app
+    app_iter = app.wsgi_app(environ, start_response)
+    
+    try:
+        for data in app_iter:
+            response_data['body'].append(data)
+    finally:
+        if hasattr(app_iter, 'close'):
+            app_iter.close()
+    
+    # Parse status code
+    status_code = int(response_data['status'].split(' ')[0])
+    
+    # Convert headers to dict
+    headers_dict = {}
+    for name, value in response_data['headers']:
+        headers_dict[name] = value
+    
+    # Combine body
+    body = b''.join(response_data['body'])
+    if isinstance(body, bytes):
+        body = body.decode('utf-8', errors='replace')
+    
+    return {
+        'statusCode': status_code,
+        'headers': headers_dict,
+        'body': body,
+        'isBase64Encoded': False
+    }
