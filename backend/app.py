@@ -12,11 +12,44 @@ from io import BytesIO
 from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
 from datetime import datetime
+import sys
+import logging
 
-app = Flask(__name__, 
-            static_folder='../frontend',
-            template_folder='../frontend',
-            static_url_path='')
+# Set up detailed logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    stream=sys.stdout
+)
+
+print("=== STARTING AGRINOVA APP ===")
+print(f"Python version: {sys.version}")
+print(f"Current directory: {os.getcwd()}")
+print(f"Files in directory: {os.listdir('.')}")
+
+# Check for missing dependencies
+try:
+    import flask
+    print(f"✅ Flask version: {flask.__version__}")
+    import flask_cors
+    print("✅ Flask-CORS imported")
+    import requests
+    print(f"✅ Requests version: {requests.__version__}")
+    import joblib
+    print(f"✅ Joblib version: {joblib.__version__}")
+except ImportError as e:
+    print(f"❌ Missing dependency: {e}")
+    raise
+
+try:
+    app = Flask(__name__, 
+                static_folder='../frontend',
+                template_folder='../frontend',
+                static_url_path='')
+    print("✅ Flask app created successfully")
+except Exception as e:
+    print(f"❌ Failed to create Flask app: {e}")
+    raise
 
 app.config['SECRET_KEY'] = 'agrinova-secret-key-parth-2026'
 CORS(app)
